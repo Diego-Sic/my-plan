@@ -11,7 +11,7 @@ const poem = [
   },
   {
     left: "To like you as you are",
-    right: "Любити тебе такою, яка ти є",
+    right: "Захоплюватися тобою – такою, якою ти є",
   },
   {
     left: "My tactic is to talk to you",
@@ -75,16 +75,24 @@ export default function PoemCarousel() {
   const [index, setIndex] = useState(0);
 
   const nextSlide = () => {
-    setIndex((prevIndex) => (prevIndex + 1) % poem.length);
+    if (index < poem.length - 1) {
+      setIndex(index + 1);
+    }
   };
 
   const prevSlide = () => {
-    setIndex((prevIndex) => (prevIndex - 1 + poem.length) % poem.length);
+    if (index > 0) {
+      setIndex(index - 1);
+    }
+  };
+
+  const reloadCarousel = () => {
+    setIndex(0);
   };
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex flex-col md:flex-row gap-4 w-full max-w-4xl">
+      <div className="flex flex-col md:flex-row gap-4 w-full max-w-4xl transition-opacity duration-700 ease-in-out opacity-100">
         <div className="flex-1 bg-white rounded-2xl shadow-lg p-6 flex items-center justify-center text-center text-lg md:text-2xl font-medium text-gray-700">
           {poem[index].left}
         </div>
@@ -96,16 +104,31 @@ export default function PoemCarousel() {
       <div className="flex gap-4 mt-8">
         <button
           onClick={prevSlide}
-          className="px-4 py-2 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition"
+          disabled={index === 0}
+          className={`px-4 py-2 rounded-xl transition ${
+            index === 0
+              ? "bg-gray-300 text-gray-600"
+              : "bg-indigo-500 text-white hover:bg-indigo-600"
+          }`}
         >
-          Previous
+          ⬅️ Previous
         </button>
-        <button
-          onClick={nextSlide}
-          className="px-4 py-2 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition"
-        >
-          Next
-        </button>
+
+        {index < poem.length - 1 ? (
+          <button
+            onClick={nextSlide}
+            className="px-4 py-2 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition"
+          >
+            ➡️ Next
+          </button>
+        ) : (
+          <button
+            onClick={reloadCarousel}
+            className="px-4 py-2 bg-green-500 text-white rounded-xl hover:bg-green-600 transition"
+          >
+            🔄 Reload
+          </button>
+        )}
       </div>
     </div>
   );
