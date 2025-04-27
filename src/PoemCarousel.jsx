@@ -47,7 +47,7 @@ const poem = [
   },
   {
     left: "And that we don’t trade illusions",
-    right: "І щоб ми не продавали одне одному ілюзій",
+    right: "Не продавати одне одному ілюзій",
   },
   {
     left: "So that between us there is no curtain nor abysses",
